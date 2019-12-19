@@ -1,0 +1,15 @@
+db2:
+  db:
+    bluemix:
+      url: jdbc:db2://dashdb-txnha-small-yp-dal09-54.services.dal.bluemix.net:50000/BLUDB
+      password: NTM3ZWFlYjZjNjI5
+      username: bluadmin
+    driver: com.ibm.db2.jcc.DB2Driver  
+
+spring:
+  main:
+    allow-bean-definition-overriding: true 
+  batch:
+    job:
+      enabled: false 
+    
