@@ -26,12 +26,12 @@ public class CountryWriter implements ItemWriter<Location> {
 		for(Location location : locations)
 		{
 			try{
-				int country_id = jdbcTemplate.queryForObject("SELECT COUNTRY_ID FROM NE_COUNTRY_MASTER WHERE VC_COUNTRY_NAME ='" + location.getCountry() + "'",Integer.class);
+				int country_id = jdbcTemplate.queryForObject("SELECT COUNTRY_ID FROM NE_COUNTRY_MASTER WHERE VC_COUNTRY_NAME ='" + location.getCountry().replace("'", "''") + "'",Integer.class);
 				logger.info("Country with Name:- " + location.getCountry() + ", Id:- " + country_id + " already exists in ne_country_master table.");
 			}
 			catch(EmptyResultDataAccessException ex)
 			{
-				jdbcTemplate.update("INSERT INTO NE_COUNTRY_MASTER (VC_COUNTRY_NAME, IN_STATUS) VALUES ('" + location.getCountry() + "', 13)");
+				jdbcTemplate.update("INSERT INTO NE_COUNTRY_MASTER (VC_COUNTRY_NAME, IN_STATUS) VALUES ('" + location.getCountry().replace("'", "''") + "', 13)");
 				logger.info("Insertion of new country with name '" + location.getCountry().toUpperCase() + "' in ne_country_master table successfull.");
 			}
 			

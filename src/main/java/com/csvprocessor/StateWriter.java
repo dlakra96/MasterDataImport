@@ -31,15 +31,15 @@ public class StateWriter implements ItemWriter<Location> {
 				 /*deepanshu.l ==> country_id would not come null in any case as this state_writer is scheduled after country_writer which would definitely ensure 
 									that we have desired country present in ne_country_master table. */
 				
-				country_id = jdbcTemplate.queryForObject("SELECT COUNTRY_ID FROM NE_COUNTRY_MASTER WHERE VC_COUNTRY_NAME ='" + location.getCountry() + "'",Integer.class);
+				country_id = jdbcTemplate.queryForObject("SELECT COUNTRY_ID FROM NE_COUNTRY_MASTER WHERE VC_COUNTRY_NAME ='" + location.getCountry().replace("'", "''") + "'",Integer.class);
 				
-				int state_id = jdbcTemplate.queryForObject("SELECT STATE_ID FROM NE_STATE_MASTER WHERE VC_STATE = '" + location.getState() + "' AND VC_COUNTRY = " + country_id + "", Integer.class);
+				int state_id = jdbcTemplate.queryForObject("SELECT STATE_ID FROM NE_STATE_MASTER WHERE VC_STATE = '" + location.getState().replace("'", "''") + "' AND VC_COUNTRY = " + country_id + "", Integer.class);
 			
 				logger.info("State with name:- '" + location.getState().toUpperCase() + "' and Id:- " + state_id + " already exists in ne_state_master table.");
 			}
 			catch(EmptyResultDataAccessException ex)
 			{
-				jdbcTemplate.update("INSERT INTO NE_STATE_MASTER (VC_STATE, VC_COUNTRY, IN_STATUS) VALUES ('" + location.getState() + "', "+ country_id + ", 13)");
+				jdbcTemplate.update("INSERT INTO NE_STATE_MASTER (VC_STATE, VC_COUNTRY, IN_STATUS) VALUES ('" + location.getState().replace("'", "''") + "', "+ country_id + ", 13)");
 				
 				logger.info("insertion of new state with name :- '" + location.getState().toUpperCase() + "' successfull in ne_state_master table.");
 			}

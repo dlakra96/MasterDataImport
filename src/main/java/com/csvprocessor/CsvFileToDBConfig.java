@@ -76,7 +76,7 @@ public ItemWriter<Location> locationWriter(){
 @Bean
 public Step csvFileToDatabaseStep() {
 	return stepBuilderFactory.get("csvFileToDatabaseStep")
-			                 .<Location,Location>chunk(20)
+			                 .<Location,Location>chunk(200)
 			                 .reader(csvLocationReader())
 			                 .writer(locationWriter())
 			                 .build();

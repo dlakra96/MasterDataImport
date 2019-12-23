@@ -53,8 +53,8 @@ public class DBConfig {
 			dataSource.setUrl(env.getRequiredProperty(DB2_DATABASE_URL_PROPERTY_NAME));
 			dataSource.setUsername(env.getRequiredProperty(DB2_DATABASE_USERNAME_PROPERTY_NAME));
 			dataSource.setPassword(env.getRequiredProperty(DB2_DATABASE_PASSWORD_PROPERTY_NAME));
-			dataSource.setMinIdle(5);
-			dataSource.setMaxIdle(10);
+			dataSource.setMinIdle(10);
+			dataSource.setMaxIdle(20);
 		}
 		return dataSource;
 	
