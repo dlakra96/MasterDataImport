@@ -32,7 +32,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,8 +80,8 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>2.1.0</version>
 				<configuration>
-				  <version>1</version>
-				  <projectId>csvimportproject77</projectId>
+				  <version>4</version>
+				  <projectId>csvimportversion2</projectId>
 				</configuration>
 			      </plugin>
 		</plugins>
