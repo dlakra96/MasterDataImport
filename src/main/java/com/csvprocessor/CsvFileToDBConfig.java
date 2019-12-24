@@ -10,6 +10,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -18,6 +19,7 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -35,11 +37,14 @@ public JobBuilderFactory jobBuilderFactory;
 @Autowired
 public StepBuilderFactory stepBuilderFactory;
 
+private static final String OVERRIDDEN_BY_EXPRESSION = null;
+
 @Bean
-public FlatFileItemReader<Location> csvLocationReader(){
+@StepScope
+public FlatFileItemReader<Location> csvLocationReader(@Value("#{jobParameters[filename]}") String pathToFile){
 	
 	FlatFileItemReader<Location> csvReader = new FlatFileItemReader<Location>();
-	csvReader.setResource(new ClassPathResource("uscities_mod1.csv"));
+	csvReader.setResource(new ClassPathResource(pathToFile));
 	csvReader.setLineMapper(new DefaultLineMapper<Location>() {{
 		setLineTokenizer(new DelimitedLineTokenizer() {{
 			setNames(new String[] {"city_name", "state_name", "country_name"});
@@ -77,7 +82,7 @@ public ItemWriter<Location> locationWriter(){
 public Step csvFileToDatabaseStep() {
 	return stepBuilderFactory.get("csvFileToDatabaseStep")
 			                 .<Location,Location>chunk(200)
-			                 .reader(csvLocationReader())
+			                 .reader(csvLocationReader(OVERRIDDEN_BY_EXPRESSION))
 			                 .writer(locationWriter())
 			                 .build();
 }
